@@ -6,8 +6,8 @@ Change name as needed in:<br>
 - include statment inside load.php
 - primary php file in plugin folder
 <br>
-#Details of edits:<br>
-- Download ZIP and extract to project wp-content directory.<br>
+Details of edits:<br>
+- Download ZIP and extract to project wp-content directory<br>
 - Change folder name to <projectname>-core-functionality<br>
 - Edit load.php and change load statement to reflect changed project folder naming. (2 locations)<br>
 - Change to plugin folder<br>
