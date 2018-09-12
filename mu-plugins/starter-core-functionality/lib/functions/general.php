@@ -180,16 +180,6 @@ function sp_search_text( $text ) {
 }
 
 //
-// Enqueue / register needed scripts
-// Load Font Awesome
-add_action( 'wp_enqueue_scripts', 'cws_enqueue_needed_scripts' );
-function cws_enqueue_needed_scripts() {
-	// font-awesome
-	// Ref: application of these fonts: https://sridharkatakam.com/using-font-awesome-wordpress/
-	wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css' );
-}
-
-//
 // Add custom logo to login page
 // Requires a transparent logo file in the theme's images folder named 'login_logo.png'
 add_action( 'login_head', 'custom_loginlogo' );
@@ -256,18 +246,6 @@ function cd_custom_404() {
 	if ( is_404() ) {
 		get_template_part( '/partials/sitemap' ); // Plop in our customized sitemap code
 	}
-}
-
-
-// Add the filter and function, returning the widget title only if the first character is not "!"
-// Author: Stephen Cronin
-// Author URI: http://www.scratch99.com/
-add_filter( 'widget_title', 'remove_widget_title' );
-function remove_widget_title( $widget_title ) {
-	if ( substr ( $widget_title, 0, 1 ) == '!' )
-		return;
-	else 
-		return ( $widget_title );
 }
 
 
