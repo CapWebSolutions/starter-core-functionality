@@ -39,6 +39,25 @@ function be_core_functionality_hidden( $r, $url ) {
 }
 add_filter( 'http_request_args', 'be_core_functionality_hidden', 5, 2 );
 
+// Enqueue / register needed scripts & styles
+add_action( 'wp_enqueue_scripts', 'capweb_enqueue_needed_scripts' );
+// add_action( 'admin_enqueue_scripts', 'CORE_FUNCTION_enqueue_needed_scripts' );
+/**
+ * Enque Needed Scripts
+ * @since 1.0.0
+ *
+ * Enqueue scripts and styles needed by core functionality.
+ *
+ * @author Matt Ryan
+ *
+ * @param void
+ * @return void
+ */
+function capweb_enqueue_needed_scripts() {
+	wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/73b396df58.css' );
+	wp_enqueue_style( 'core-functionality', CORE_FUNCTION_URL . 'assets/css/core-functionality.css', array(), null, true );
+}
+
 // Use shortcodes in widgets
 add_filter( 'widget_text', 'do_shortcode' );
 

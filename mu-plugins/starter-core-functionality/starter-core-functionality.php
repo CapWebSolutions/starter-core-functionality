@@ -3,7 +3,7 @@
  * Plugin Name: Starter Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/starter-core-functionality
  * Description: This contains all this site's core functionality so that it is theme independent. 
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  *
