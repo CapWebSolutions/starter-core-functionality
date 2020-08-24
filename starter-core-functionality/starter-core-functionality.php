@@ -3,7 +3,7 @@
  * Plugin Name: Starter Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/starter-core-functionality
  * Description: This contains all this site's core functionality so that it is theme independent. 
- * Version: 1.1.0
+ * Version: 2.0
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  *
@@ -28,8 +28,14 @@
   define( 'CORE_FUNCTION_URL', $plugin_url );
   define( 'CORE_FUNCTION_DIR', plugin_dir_path( __FILE__ ) );
 
+  // var_dump(CORE_FUNCTION_DIR);
+  // var_dump(CORE_FUNCTION_URL);
+  
 // General. This should always be used. 
 include_once( CORE_FUNCTION_DIR . '/lib/functions/general.php' );
+
+// Pull in Duplicate Post function.
+include_once( CORE_FUNCTION_DIR . '/lib/functions/duplicate-post.php' );
 
 // Define needed Custom Post Types.
 // include_once( CORE_FUNCTION_DIR . '/lib/functions/post-types.php' );
