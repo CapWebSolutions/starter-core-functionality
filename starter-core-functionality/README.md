@@ -14,3 +14,5 @@ Details of edits:<br>
 - Rename starter-core-functionalty.php to <projectsname>-core-functionality.php<br>
 - Edit <projectsname>-core-functionality.php and change name of plugin in docblock to proper name.<br>
 #DONE!
+Changelog:
+8/24/2020 2.0 - Convert from an mu plugin to standard. Add duplicate post function.
