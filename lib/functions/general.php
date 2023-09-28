@@ -41,7 +41,6 @@ add_filter( 'http_request_args', 'capweb_core_functionality_hidden', 5, 2 );
 
 // Enqueue / register needed scripts & styles
 add_action( 'wp_enqueue_scripts', 'capweb_enqueue_needed_scripts' );
-// add_action( 'admin_enqueue_scripts', 'CORE_FUNCTION_enqueue_needed_scripts' );
 /**
  * Enque Needed Scripts
  * @since 1.0.0
@@ -54,15 +53,11 @@ add_action( 'wp_enqueue_scripts', 'capweb_enqueue_needed_scripts' );
  * @return void
  */
 function capweb_enqueue_needed_scripts() {
-	wp_enqueue_style( 'font-awesome', 'https://use.fontawesome.com/73b396df58.css' );
-	wp_enqueue_style( 'core-functionality', CORE_FUNCTION_URL . 'assets/css/core-functionality.css', array(), null, true );
+	wp_enqueue_style( 'core-functionality', CORE_FUNCTIONALITY_PLUGIN_DIR . 'assets/css/core-functionality.css', array(), null, true );
 }
 
 // Use shortcodes in widgets
 add_filter( 'widget_text', 'do_shortcode' );
-
-// Add Genesis theme support for WooCommerce
-add_theme_support( 'genesis-connect-woocommerce' );
 
 // Remove theme and plugin editor links
 add_action( 'admin_init','cws_hide_editor_and_tools' );
@@ -81,9 +76,6 @@ function remove_widget_title( $widget_title ) {
 	else 
 		return ( $widget_title );
 }
-
-// Re-enable links manager. Source: http://codex.wordpress.org/Links_Manager
-add_filter( 'pre_option_link_manager_enabled', '__return_true' );
 
 /**
  * Remove Menu Items
@@ -143,16 +135,6 @@ add_filter( 'menu_order', 'capweb_custom_menu_order' );
 
 // Disable WPSEO columns on edit screen
 add_filter( 'wpseo_use_page_analysis', '__return_false' );
-
-//
-// * Customize search form input box text
-// * Ref: https://my.studiopress.com/snippets/search-form/
-add_filter( 'genesis_search_text', 'sp_search_text' );
-function sp_search_text( $text ) {
-	// return esc_attr( 'Search my blog...' );
-	return esc_attr( 'Search ' . get_bloginfo( $show = '', 'display' ) );
-	get_permalink();
-}
 
 // We will make use of widget_title filter to 
 //dynamically replace custom tags with html tags

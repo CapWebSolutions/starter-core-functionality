@@ -42,10 +42,10 @@ include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'metabox/example.php' );
 
 // Woo tweaks. Only if WooCommerce active.
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-	include_once( CORE_FUNCTION_DIR . '/lib/functions/wootweaks.php' );
+	include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/wootweaks.php' );
 }
 
 // Gravity Forms tweaks. This should always be used if Gravity Forms active. Which one to use??
 if ( in_array( 'gravityforms/gravityforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-	include_once( CORE_FUNCTION_DIR . '/lib/functions/gravitytweaks.php' );
+	include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/gravitytweaks.php' );
 }
