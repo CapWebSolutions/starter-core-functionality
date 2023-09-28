@@ -27,7 +27,7 @@
  * @param string $url, request url
  * @return array request arguments
  */
-function be_core_functionality_hidden( $r, $url ) {
+function capweb_core_functionality_hidden( $r, $url ) {
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) ) {
 		return $r; // Not a plugin update request. Bail immediately.
 	}
@@ -37,7 +37,7 @@ function be_core_functionality_hidden( $r, $url ) {
 	$r['body']['plugins'] = serialize( $plugins );
 	return $r;
 }
-add_filter( 'http_request_args', 'be_core_functionality_hidden', 5, 2 );
+add_filter( 'http_request_args', 'capweb_core_functionality_hidden', 5, 2 );
 
 // Enqueue / register needed scripts & styles
 add_action( 'wp_enqueue_scripts', 'capweb_enqueue_needed_scripts' );
@@ -81,12 +81,6 @@ function remove_widget_title( $widget_title ) {
 	else 
 		return ( $widget_title );
 }
-/*
- * Prevent the Jetpack publicize connections from being auto-selected,
- * so you need to manually select them if you’d like to publicize something.
- * Source: http://jetpack.me/2013/10/15/ever-accidentally-publicize-a-post-that-you-didnt/
- */
-add_filter( 'publicize_checkbox_default', '__return_false' );
 
 // Re-enable links manager. Source: http://codex.wordpress.org/Links_Manager
 add_filter( 'pre_option_link_manager_enabled', '__return_true' );
@@ -99,7 +93,7 @@ add_filter( 'pre_option_link_manager_enabled', '__return_true' );
  * Remove unused menu items by adding them to the array.
  * See the commented list of menu items for reference.
  */
-function be_remove_menus() {
+function capweb_remove_menus() {
 	global $menu;
 	$restricted = array( __( 'Links' ) );
 	// Example:
@@ -110,7 +104,7 @@ function be_remove_menus() {
 		if ( in_array( $value[0] != null?$value[0]:'' , $restricted ) ) {unset( $menu[ key( $menu ) ] );}
 	}
 }
-add_action( 'admin_menu', 'be_remove_menus' );
+add_action( 'admin_menu', 'capweb_remove_menus' );
 
 /**
  * Customize Admin Bar Items
@@ -118,11 +112,11 @@ add_action( 'admin_menu', 'be_remove_menus' );
  * @since 1.0.0
  * @link http://wp-snippets.com/addremove-wp-admin-bar-links/
  */
-function be_admin_bar_items() {
+function capweb_admin_bar_items() {
 	global $wp_admin_bar;
 	$wp_admin_bar->remove_menu( 'new-link', 'new-content' );
 }
-add_action( 'wp_before_admin_bar_render', 'be_admin_bar_items' );
+add_action( 'wp_before_admin_bar_render', 'capweb_admin_bar_items' );
 
 
 /**
@@ -133,7 +127,7 @@ add_action( 'wp_before_admin_bar_render', 'be_admin_bar_items' );
  * @param array $menu_ord. Current order.
  * @return array $menu_ord. New order.
  */
-function be_custom_menu_order( $menu_ord ) {
+function capweb_custom_menu_order( $menu_ord ) {
 	if ( ! $menu_ord ) { return true;
 	}
 	return array(
@@ -144,31 +138,12 @@ function be_custom_menu_order( $menu_ord ) {
 		'upload.php', // the media manager
 	);
 }
-add_filter( 'custom_menu_order', 'be_custom_menu_order' );
-add_filter( 'menu_order', 'be_custom_menu_order' );
+add_filter( 'custom_menu_order', 'capweb_custom_menu_order' );
+add_filter( 'menu_order', 'capweb_custom_menu_order' );
 
 // Disable WPSEO columns on edit screen
 add_filter( 'wpseo_use_page_analysis', '__return_false' );
 
-// * Automatically link Twitter names to Twitter URL
-// Ref: https://www.nutsandboltsmedia.com/how-to-create-a-custom-functionality-plugin-and-why-you-need-one/
-function twtreplace( $content ) {
-	$twtreplace = preg_replace( '/([^a-zA-Z0-9-_&])@([0-9a-zA-Z_]+)/','$1<a href="http://twitter.com/$2" target="_blank" rel="nofollow">@$2</a>',$content );
-	return $twtreplace;
-}
-add_filter( 'the_content', 'twtreplace' );
-add_filter( 'comment_text', 'twtreplace' );
-
-//
-// Force  IE to NOT use compatibility mode
-// Ref: https://www.nutsandboltsmedia.com/how-to-create-a-custom-functionality-plugin-and-why-you-need-one/
-add_filter( 'wp_headers', 'wsm_keep_ie_modern' );
-function wsm_keep_ie_modern( $headers ) {
-	if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && ( strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE' ) !== false ) ) {
-		$headers['X-UA-Compatible'] = 'IE=edge,chrome=1';
-	}
-		return $headers;
-}
 //
 // * Customize search form input box text
 // * Ref: https://my.studiopress.com/snippets/search-form/
@@ -178,49 +153,6 @@ function sp_search_text( $text ) {
 	return esc_attr( 'Search ' . get_bloginfo( $show = '', 'display' ) );
 	get_permalink();
 }
-
-//
-// Add custom logo to login page
-// Requires a transparent logo file in the theme's images folder named 'login_logo.png'
-add_action( 'login_head', 'custom_loginlogo' );
-function custom_loginlogo() {
-	echo '<style type="text/css">
-h1 a {background-image: url(' . get_bloginfo( 'template_directory' ) . '/images/login_logo.png) !important; }
-</style>';
-}
-
-// Custom avatar_size
-add_filter( 'avatar_defaults', 'add_custom_gravatar' );
-function add_custom_gravatar( $avatar_defaults ) {
-	 $myavatar = get_stylesheet_directory_uri() . '/images/custom-gravatar.jpg';
-	 $avatar_defaults[ $myavatar ] = 'Custom Gravatar';
-	 return $avatar_defaults;
-}
-
-add_filter( 'comment_form_defaults', 'cd_pre_comment_text' );
-/**
- * Change the text output that appears before the comment form
- * Note: Logged in user will not see this text.
- *
- * @author Carrie Dils <http://www.carriedils.com>
- * @uses comment_notes_before <http://codex.wordpress.org/Function_Reference/comment_form>
- *  ref: http://www.carriedils.com/customize-wordpress-comments/
- */
-function cd_pre_comment_text( $arg ) {
-	$arg['comment_notes_before'] = "Want to see your pic by your comment? Get a free custom avatar at <a href='http://www.gravatar.com' target='_blank' >Gravatar</a>.";
-	return $arg;
-}
-
-// ref: http://www.carriedils.com/customize-wordpress-comments/
-add_action( 'pre_ping', 'disable_self_ping' );
-function disable_self_ping( &$links ) {
-	foreach ( $links as $l => $link ) {
-		if ( 0 === strpos( $link, get_option( 'home' ) ) ) {
-			unset( $links[ $l ] );
-		}
-	}
-}
-
 
 // We will make use of widget_title filter to 
 //dynamically replace custom tags with html tags
@@ -237,26 +169,46 @@ function accept_html_widget_title( $mytitle ) {
 	return $mytitle;
 }
 
-// Custom 404 Pages ===================================================
-// Call the sitemap generator
-// Source: http://www.carriedils.com/custom-404-wordpress-html-sitemap/
-// remove_action( 'genesis_loop', 'genesis_404' ); // Remove the default Genesis 404 content
-add_action( 'genesis_loop', 'cd_custom_404' ); // Add function for custom 404 content
-function cd_custom_404() {
-	if ( is_404() ) {
-		get_template_part( '/partials/sitemap' ); // Plop in our customized sitemap code
-	}
+//Move Yoast to the Bottom of editor screen
+function capweb_move_yoast_to_bottom() {
+    return 'low';
 }
+add_filter( 'wpseo_metabox_prio', 'capweb_move_yoast_to_bottom');
 
 
-/**
- * Remove title from individual pages. 
- */
-// add_action( 'get_header', 'remove_titles_from_pages' );
-function remove_titles_from_pages() {
-	// Add list of page slugs in array
-    if ( is_page(array('about', 'main') ) ) {
-        remove_action( 'genesis_entry_header', 'genesis_do_post_title' );
-    }
+ 
+//Auto Add Alt Tags
+/* Automatically set the image Title, Alt-Text, Caption & Description upon upload
+--------------------------------------------------------------------------------------*/
+add_action( 'add_attachment', 'capweb_set_image_meta_upon_image_upload' );
+function capweb_set_image_meta_upon_image_upload( $post_ID ) {
+ 
+	// Check if uploaded file is an image, else do nothing
+ 
+	if ( wp_attachment_is_image( $post_ID ) ) {
+ 
+		$my_image_title = get_post( $post_ID )->post_title;
+ 
+		// Sanitize the title:  remove hyphens, underscores & extra spaces:
+		$my_image_title = preg_replace( '%\s*[-_\s]+\s*%', ' ',  $my_image_title );
+ 
+		// Sanitize the title:  capitalize first letter of every word (other letters lower case):
+		$my_image_title = ucwords( strtolower( $my_image_title ) );
+ 
+		// Create an array with the image meta (Title, Caption, Description) to be updated
+		// Note:  comment out the Excerpt/Caption or Content/Description lines if not needed
+		$my_image_meta = array(
+			'ID'		=> $post_ID,			// Specify the image (ID) to be updated
+			'post_title'	=> $my_image_title,		// Set image Title to sanitized title
+			//'post_excerpt'	=> $my_image_title,		// Set image Caption (Excerpt) to sanitized title
+			//'post_content'	=> $my_image_title,		// Set image Description (Content) to sanitized title
+		);
+ 
+		// Set the image Alt-Text
+		update_post_meta( $post_ID, '_wp_attachment_image_alt', $my_image_title );
+ 
+		// Set the image meta (e.g. Title, Excerpt, Content)
+		wp_update_post( $my_image_meta );
+ 
+	} 
 }
-

@@ -6,9 +6,9 @@
  *
  * @package      Core_Functionality
  * @since        1.0.0
- * @link         https://github.com/billerickson/Core-Functionality
- * @author       Bill Erickson <bill@billerickson.net>
- * @copyright    Copyright (c) 2011, Bill Erickson
+ * @link         https://github.com/capwebsolutions/starter-core-functionality
+ * @author       Matt Ryan <matt@capwebsolutions.com>
+ * @copyright    Copyright (c) 2017, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
@@ -20,8 +20,8 @@
  * @link http://codex.wordpress.org/Function_Reference/register_taxonomy
  */
 
-add_action( 'init', 'cptui_register_my_taxes' );
-function cptui_register_my_taxes() {
+add_action( 'init', 'capweb_register_my_taxes' );
+function capweb_register_my_taxes() {
 	$labels = array(
 		"name" => __( 'Genres', '' ),
 		"singular_name" => __( 'Genre', '' ),
@@ -68,5 +68,5 @@ function cptui_register_my_taxes() {
 	);
 	register_taxonomy( "genre_tag", array( "genre" ), $args );
 
-// End cptui_register_my_taxes()
+// End capweb_register_my_taxes()
 }

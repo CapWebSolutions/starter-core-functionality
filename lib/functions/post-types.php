@@ -6,14 +6,14 @@
  *
  * @package      Core_Functionality
  * @since        1.0.0
- * @link         https://github.com/billerickson/Core-Functionality
- * @author       Bill Erickson <bill@billerickson.net>
- * @copyright    Copyright (c) 2011, Bill Erickson
+ * @link         https://github.com/capwebsolutions/starter-core-functionality
+ * @author       Matt Ryan <matt@capwebsolutions.com>
+ * @copyright    Copyright (c) 2017, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
-add_action( 'init', 'cptui_register_my_cpts' );
-function cptui_register_my_cpts() {
+add_action( 'init', 'capweb_register_my_cpts' );
+function capweb_register_my_cpts() {
 
 	$labels = array(
 		"name"                  => __( 'Pieces', '' ),
@@ -75,5 +75,5 @@ function cptui_register_my_cpts() {
 	);
 	register_post_type( 'piece', $args );
 
-	// End of cptui_register_my_cpts()
+	// End of capweb_register_my_cpts()
 }
