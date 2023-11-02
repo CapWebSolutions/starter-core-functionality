@@ -25,27 +25,33 @@ if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 	require CORE_FUNCTIONALITY_PLUGIN_DIR . 'includes/class-gamajo-template-loader.php';
 }
 
-// Taxonomies
-include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/taxonomies.php' );
 
-// General
-include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/general.php' );
-include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/helper-functions.php' );
-include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/last-login.php' );
+/**
+ * Get all the include files for the theme.
+ *
+ * @author CapWebSolutions
+ */
+function capweb_include_core_functionality_inc_files() {
+	$files = [
+		'lib/functions/',
+		'lib/metabox/', // Custom Post Types, Taxonomy, Display
+		'lib/templates/display-custom-fields.php',
+		'lib/metabox-io-example.php', // TGMPA library and related for Metabox.io
+	];
 
-// Post Types
-include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/post-types.php' );
+	foreach ( $files as $include ) {
+		// $include = trailingslashit( get_stylesheet_directory() ) . $include;
+		$include = trailingslashit( CORE_FUNCTIONALITY_PLUGIN_DIR ) . $include;
 
-
-// TGMPA library and related for Metabox.io
-include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'metabox/example.php' );
-
-// Woo tweaks. Only if WooCommerce active.
-if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-	include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/wootweaks.php' );
+		// error_log( ' $include' . var_export( $include, true ) );  // Log file to debug 
+		// Allows inclusion of individual files or all .php files in a directory.
+		if ( is_dir( $include ) ) {
+			foreach ( glob( $include . '*.php' ) as $file ) {
+				require $file;
+			}
+		} else {
+			require $include;
+		}
+	}
 }
-
-// Gravity Forms tweaks. This should always be used if Gravity Forms active. Which one to use??
-if ( in_array( 'gravityforms/gravityforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-	include_once( CORE_FUNCTIONALITY_PLUGIN_DIR . 'lib/functions/gravitytweaks.php' );
-}
+capweb_include_core_functionality_inc_files();
