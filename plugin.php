@@ -3,7 +3,7 @@
  * Plugin Name: Starter Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/starter-core-functionality
  * Description: This contains all your site's core functionality so that it is theme independent.
- * Version: 2.0.0
+ * Version: 2.0.1
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
  *
@@ -18,13 +18,15 @@
 
 namespace capweb;
 
-// Plugin Directory
-define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+// Define needed constants
+define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) ); //location of plugin folder on disk
+define( 'CORE_FUNCTIONALITY_PLUGIN_URI', plugin_dir_url( __FILE__ ) );  //location of plugin folder in wp-content
+define( 'CORE_FUNCTIONALITY_THEME_DIR', get_stylesheet_directory() );   // Used in checking location of logo file
+define( 'CORE_FUNCTIONALITY_PLUGIN_VERSION',get_plugin_data(__FILE__ )['Version'] ); 
 
 if( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 	require CORE_FUNCTIONALITY_PLUGIN_DIR . 'includes/class-gamajo-template-loader.php';
 }
-
 
 /**
  * Get all the include files for the theme.
@@ -40,17 +42,14 @@ function capweb_include_core_functionality_inc_files() {
 	];
 
 	foreach ( $files as $include ) {
-		// $include = trailingslashit( get_stylesheet_directory() ) . $include;
 		$include = trailingslashit( CORE_FUNCTIONALITY_PLUGIN_DIR ) . $include;
-
-		// error_log( ' $include' . var_export( $include, true ) );  // Log file to debug 
 		// Allows inclusion of individual files or all .php files in a directory.
 		if ( is_dir( $include ) ) {
 			foreach ( glob( $include . '*.php' ) as $file ) {
-				require $file;
+				require $file;  // all php files from folder
 			}
 		} else {
-			require $include;
+			require $include;    // single php file
 		}
 	}
 }
