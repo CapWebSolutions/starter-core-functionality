@@ -10,12 +10,13 @@
  *
  * @package    TGM-Plugin-Activation
  * @subpackage Example
- * @version    2.6.1 for plugin Penncat Core Functionality
+ * @version    2.6.1
  * @author     Thomas Griffin, Gary Jones, Juliette Reinders Folmer
  * @copyright  Copyright (c) 2011, Thomas Griffin
  * @license    http://opensource.org/licenses/gpl-2.0.php GPL v2 or later
  * @link       https://github.com/TGMPA/TGM-Plugin-Activation
  */
+namespace capweb;
 
 /**
  * Include the TGM_Plugin_Activation class.
@@ -35,7 +36,7 @@
 require CORE_FUNCTIONALITY_PLUGIN_DIR . 'includes/class-tgm-plugin-activation.php';
 
 
-add_action( 'tgmpa_register', 'capweb_register_required_plugins' );
+add_action( 'tgmpa_register', __NAMESPACE__ . '\_register_required_plugins' );
 
 /**
  * Register the required plugins for this theme.
@@ -54,7 +55,7 @@ add_action( 'tgmpa_register', 'capweb_register_required_plugins' );
  *
  * This function is hooked into `tgmpa_register`, which is fired on the WP `init` action on priority 10.
  */
-function capweb_register_required_plugins() {
+function _register_required_plugins() {
 	/*
 	 * Array of plugin arrays. Required keys are name and slug.
 	 * If the source is NOT from the .org repo, then source is also required.

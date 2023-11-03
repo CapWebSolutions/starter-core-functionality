@@ -11,6 +11,7 @@
  * @copyright    Copyright (c) 2017, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+namespace capweb;
 
 /**
  * Don't Update Plugin
@@ -27,7 +28,7 @@
  * @param string $url, request url
  * @return array request arguments
  */
-function capweb_core_functionality_hidden( $r, $url ) {
+function _core_functionality_hidden( $r, $url ) {
 	if ( 0 !== strpos( $url, 'http://api.wordpress.org/plugins/update-check' ) ) {
 		return $r; // Not a plugin update request. Bail immediately.
 	}
@@ -37,10 +38,10 @@ function capweb_core_functionality_hidden( $r, $url ) {
 	$r['body']['plugins'] = serialize( $plugins );
 	return $r;
 }
-add_filter( 'http_request_args', 'capweb_core_functionality_hidden', 5, 2 );
+add_filter( 'http_request_args', __NAMESPACE__ . '\_core_functionality_hidden', 5, 2 );
 
 // Enqueue / register needed scripts & styles
-add_action( 'wp_enqueue_scripts', 'capweb_enqueue_needed_scripts' );
+add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\_enqueue_needed_scripts' );
 /**
  * Enque Needed Scripts
  * @since 1.0.0
@@ -52,7 +53,7 @@ add_action( 'wp_enqueue_scripts', 'capweb_enqueue_needed_scripts' );
  * @param void
  * @return void
  */
-function capweb_enqueue_needed_scripts() {
+function _enqueue_needed_scripts() {
 	wp_enqueue_style( 'core-functionality', CORE_FUNCTIONALITY_PLUGIN_DIR . 'assets/css/core-functionality.css', array(), null, true );
 }
 
@@ -60,8 +61,8 @@ function capweb_enqueue_needed_scripts() {
 add_filter( 'widget_text', 'do_shortcode' );
 
 // Remove theme and plugin editor links
-add_action( 'admin_init','cws_hide_editor_and_tools' );
-function cws_hide_editor_and_tools() {
+add_action( 'admin_init', __NAMESPACE__ . '\_hide_editor_and_tools' );
+function _hide_editor_and_tools() {
 	remove_submenu_page( 'themes.php','theme-editor.php' );
 	remove_submenu_page( 'plugins.php','plugin-editor.php' );
 }
@@ -69,8 +70,8 @@ function cws_hide_editor_and_tools() {
 // Add the filter and function, returning the widget title only if the first character is not "!"
 // Author: Stephen Cronin
 // Author URI: http://www.scratch99.com/
-add_filter( 'widget_title', 'remove_widget_title' );
-function remove_widget_title( $widget_title ) {
+add_filter( 'widget_title', __NAMESPACE__ . '\_remove_widget_title' );
+function _remove_widget_title( $widget_title ) {
 	if ( substr ( $widget_title, 0, 1 ) == '!' )
 		return;
 	else 
@@ -85,7 +86,7 @@ function remove_widget_title( $widget_title ) {
  * Remove unused menu items by adding them to the array.
  * See the commented list of menu items for reference.
  */
-function capweb_remove_menus() {
+function _remove_menus() {
 	global $menu;
 	$restricted = array( __( 'Links' ) );
 	// Example:
@@ -96,7 +97,7 @@ function capweb_remove_menus() {
 		if ( in_array( $value[0] != null?$value[0]:'' , $restricted ) ) {unset( $menu[ key( $menu ) ] );}
 	}
 }
-add_action( 'admin_menu', 'capweb_remove_menus' );
+add_action( 'admin_menu', __NAMESPACE__ . '\_remove_menus' );
 
 /**
  * Customize Admin Bar Items
@@ -104,11 +105,11 @@ add_action( 'admin_menu', 'capweb_remove_menus' );
  * @since 1.0.0
  * @link http://wp-snippets.com/addremove-wp-admin-bar-links/
  */
-function capweb_admin_bar_items() {
+function _admin_bar_items() {
 	global $wp_admin_bar;
 	$wp_admin_bar->remove_menu( 'new-link', 'new-content' );
 }
-add_action( 'wp_before_admin_bar_render', 'capweb_admin_bar_items' );
+add_action( 'wp_before_admin_bar_render', __NAMESPACE__ . '\_admin_bar_items' );
 
 
 /**
@@ -119,7 +120,7 @@ add_action( 'wp_before_admin_bar_render', 'capweb_admin_bar_items' );
  * @param array $menu_ord. Current order.
  * @return array $menu_ord. New order.
  */
-function capweb_custom_menu_order( $menu_ord ) {
+function _custom_menu_order( $menu_ord ) {
 	if ( ! $menu_ord ) { return true;
 	}
 	return array(
@@ -130,8 +131,8 @@ function capweb_custom_menu_order( $menu_ord ) {
 		'upload.php', // the media manager
 	);
 }
-add_filter( 'custom_menu_order', 'capweb_custom_menu_order' );
-add_filter( 'menu_order', 'capweb_custom_menu_order' );
+add_filter( 'custom_menu_order', __NAMESPACE__ . '\_custom_menu_order' );
+add_filter( 'menu_order', __NAMESPACE__ . '\_custom_menu_order' );
 
 // Disable WPSEO columns on edit screen
 add_filter( 'wpseo_use_page_analysis', '__return_false' );
@@ -139,8 +140,8 @@ add_filter( 'wpseo_use_page_analysis', '__return_false' );
 // We will make use of widget_title filter to 
 //dynamically replace custom tags with html tags
 
-add_filter( 'widget_title', 'accept_html_widget_title' );
-function accept_html_widget_title( $mytitle ) { 
+add_filter( 'widget_title', __NAMESPACE__ . '\_accept_html_widget_title' );
+function _accept_html_widget_title( $mytitle ) { 
 
   // The sequence of String Replacement is important!!
   
@@ -152,18 +153,18 @@ function accept_html_widget_title( $mytitle ) {
 }
 
 //Move Yoast to the Bottom of editor screen
-function capweb_move_yoast_to_bottom() {
+function _move_yoast_to_bottom() {
     return 'low';
 }
-add_filter( 'wpseo_metabox_prio', 'capweb_move_yoast_to_bottom');
+add_filter( 'wpseo_metabox_prio', __NAMESPACE__ . '\_move_yoast_to_bottom');
 
 
  
 //Auto Add Alt Tags
 /* Automatically set the image Title, Alt-Text, Caption & Description upon upload
 --------------------------------------------------------------------------------------*/
-add_action( 'add_attachment', 'capweb_set_image_meta_upon_image_upload' );
-function capweb_set_image_meta_upon_image_upload( $post_ID ) {
+add_action( 'add_attachment', __NAMESPACE__ . '\_set_image_meta_upon_image_upload' );
+function _set_image_meta_upon_image_upload( $post_ID ) {
  
 	// Check if uploaded file is an image, else do nothing
  

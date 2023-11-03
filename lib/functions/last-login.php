@@ -13,6 +13,8 @@
  * @link         https://github.com/MattRyanCo/sjec-core-functionality
  * @author       Matt Ryan
  */
+namespace capweb;
+
 
 //Record user's last login to custom meta
 add_action( 'wp_login', 'capweb_capture_login_time', 10, 2 );

@@ -11,9 +11,11 @@
  * @copyright    Copyright (c) 2017, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+namespace capweb;
 
-add_action( 'init', 'capweb_register_my_cpts' );
-function capweb_register_my_cpts() {
+
+add_action( 'init', __NAMESPACE__ . '\_register_my_cpts' );
+function _register_my_cpts() {
 
 	$labels = array(
 		"name"                  => __( 'Pieces', '' ),

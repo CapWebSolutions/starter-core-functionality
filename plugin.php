@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Starter Core Functionality
  * Plugin URI: https://github.com/CapWebSolutions/starter-core-functionality
- * Description: This contains all your site's core functionality so that it is theme independent. Customized by capwebsolutions.com.
+ * Description: This contains all your site's core functionality so that it is theme independent.
  * Version: 2.0.0
  * Author: Cap Web Solutions
  * Author URI: https://capwebsolutions.com
@@ -16,7 +16,7 @@
  *
  */
 
-// namespace capweb;
+namespace capweb;
 
 // Plugin Directory
 define( 'CORE_FUNCTIONALITY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -35,7 +35,7 @@ function capweb_include_core_functionality_inc_files() {
 	$files = [
 		'lib/functions/',
 		'lib/metabox/', // Custom Post Types, Taxonomy, Display
-		'lib/templates/display-custom-fields.php',
+		'lib/templates/', // custom templates for metbox fields
 		'lib/metabox-io-example.php', // TGMPA library and related for Metabox.io
 	];
 

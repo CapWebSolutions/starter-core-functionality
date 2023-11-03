@@ -11,6 +11,7 @@
  * @copyright    Copyright (c) 2017, Matt Ryan
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
+namespace capweb;
 
 /**
  * Fix Gravity Form Tabindex Conflicts

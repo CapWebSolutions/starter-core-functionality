@@ -12,6 +12,7 @@
  * @license      http://opensource.org/licenses/gpl-2.0.php GNU Public License
  */
 
+ namespace capweb;
 
 /**
  * Create Genre Taxonomy
@@ -20,8 +21,8 @@
  * @link http://codex.wordpress.org/Function_Reference/register_taxonomy
  */
 
-add_action( 'init', 'capweb_register_my_taxes' );
-function capweb_register_my_taxes() {
+add_action( 'init', __NAMESPACE__ . '\_register_my_taxes' );
+function _register_my_taxes() {
 	$labels = array(
 		"name" => __( 'Genres', '' ),
 		"singular_name" => __( 'Genre', '' ),

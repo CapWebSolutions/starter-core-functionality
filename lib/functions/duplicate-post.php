@@ -1,4 +1,6 @@
 <?php 
+namespace capweb;
+
 /*
  * Function for post duplication. Duplicates appear as drafts. User is redirected to the edit screen
  *

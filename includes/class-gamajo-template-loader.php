@@ -9,7 +9,7 @@
  * @license   GPL-2.0-or-later
  * @version   1.3.1
  */
-//namespace capweb;
+namespace capweb;
 
 if ( ! class_exists( 'Gamajo_Template_Loader' ) ) {
 
